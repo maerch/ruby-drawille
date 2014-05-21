@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'ruby-drawille/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "ruby-drawille"
+  gem.name          = "drawille"
   gem.version       = Drawille::VERSION
   gem.authors       = ["Marcin Skirzynski"]
   gem.email         = ["marcin.skirzynski@gmail.com"]
@@ -16,4 +16,6 @@ Gem::Specification.new do |gem|
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
+
+  gem.add_development_dependency 'rspec'
 end
