@@ -7,7 +7,6 @@ Gem::Specification.new do |gem|
   gem.name          = "drawille"
   gem.version       = Drawille::VERSION
   gem.authors       = ["Marcin Skirzynski"]
-  gem.email         = ["marcin.skirzynski@gmail.com"]
   gem.description   = %q{Drawing in terminal with Unicode Braille characters.}
   gem.summary       = %q{Drawing in terminal with Unicode Braille characters.}
   gem.homepage      = "https://github.com/maerch/ruby-drawille"
