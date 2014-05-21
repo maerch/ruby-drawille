@@ -23,7 +23,7 @@ Or install it yourself as:
 
 ## Usage
 
-``ruby
+```ruby
 c = Drawille::Canvas.new
 
 (0..1800).step(10).each do |x| 
@@ -31,7 +31,7 @@ c = Drawille::Canvas.new
 end
 
 puts c.frame
-``
+```
 
 ## Contributing
 
