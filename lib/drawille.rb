@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-require "ruby-drawille/version"
+require "drawille/version"
 
 module Drawille
 
