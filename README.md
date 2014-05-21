@@ -11,7 +11,7 @@ Drawing in terminal with Unicode [Braille][] characters. Implementation based on
 
 Add this line to your application's Gemfile:
 
-    gem 'ruby-drawille'
+    gem 'drawille'
 
 And then execute:
 
@@ -19,7 +19,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install ruby-drawille
+    $ gem install drawille
 
 ## Usage
 
