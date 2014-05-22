@@ -32,6 +32,17 @@ module Drawille
       @chars[py][px] &= ~PIXEL_MAP[y % 4][x % 2]
     end
 
+    def get x, y
+      x, y, px, py = convert x, y
+      @chars[py][px] & PIXEL_MAP[y % 4][x % 2] != 0
+    end
+
+    def []= x, y, bool
+      bool ? set(x, y) : unset(x, y)
+    end
+
+    alias_method :[], :get
+
     def toggle x, y
       x, y, px, py = convert x, y
       @chars[py][px] & PIXEL_MAP[y % 4][x % 2] == 0 ? set(x, y) : unset(x, y) 

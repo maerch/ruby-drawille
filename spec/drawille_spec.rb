@@ -18,6 +18,69 @@ describe Drawille do
     end
   end
 
+  describe "#unset" do
+    it 'sets and unsets a pixel' do
+      subject.set(0, 0)
+      expect(subject.char(0, 0)).to eq BRAILLE[0]
+      subject.unset(0, 0)
+      expect(subject.char(0, 0)).to eq BRAILLE.last
+    end
+
+    it 'sets four pixel but only unsets one' do
+      subject.set(0, 0)
+      subject.set(0, 1)
+      subject.set(1, 0)
+      subject.set(1, 1)
+      expect(subject.char(0, 0)).to eq BRAILLE[3]
+      subject.unset(1, 1)
+      expect(subject.char(0, 0)).to eq BRAILLE[2]
+    end
+  end
+
+  describe "#get" do
+    it 'returns the state of a pixel' do
+      subject.set(1, 1)
+      expect(subject.get(0, 0)).to eq false
+      expect(subject.get(1, 1)).to eq true
+    end
+  end
+
+  describe "#toggle" do
+    it 'toggles a pixel' do
+      subject.toggle(0, 0)
+      subject.toggle(1, 0)
+      expect(subject.char(0, 0)).to eq BRAILLE[1]
+      subject.toggle(1, 0)
+      expect(subject.char(0, 0)).to eq BRAILLE[0]
+      subject.toggle(0, 0)
+      expect(subject.char(0, 0)).to eq BRAILLE.last
+    end
+  end
+
+  describe "#clear" do
+    it 'clears the canvas' do
+      subject.set(0, 0)
+      subject.set(2, 0)
+      expect(subject.char(0, 0)).to eq BRAILLE[0]
+      expect(subject.char(1, 0)).to eq BRAILLE[0]
+      subject.clear
+      expect(subject.char(0, 0)).to eq BRAILLE.last
+      expect(subject.char(1, 0)).to eq BRAILLE.last
+    end
+  end
+
+  describe '#[]' do
+    it 'works with alternate syntax' do
+      subject[0, 0] = true
+      expect(subject.char(0, 0)).to eq BRAILLE[0]
+      expect(subject[0, 0]).to eq true
+      expect(subject[1, 0]).to eq false
+      subject[0, 0] = false
+      expect(subject.char(0, 0)).to eq BRAILLE.last
+      expect(subject[0, 0]).to eq false
+    end
+  end
+
   describe "#rows" do
     it 'has over 9 columns and 3 rows' do
       subject.set(0,  1)
@@ -38,49 +101,6 @@ describe Drawille do
           subject.set(x/10, 10 + Math.sin(x * Math::PI / 180) * 10) 
       end
       expect(subject.frame).to eq IO.read("spec/sinus.dat")
-    end
-  end
-
-  describe "#clear" do
-    it 'clears the canvas' do
-      subject.set(0, 0)
-      subject.set(2, 0)
-      expect(subject.char(0, 0)).to eq BRAILLE[0]
-      expect(subject.char(1, 0)).to eq BRAILLE[0]
-      subject.clear
-      expect(subject.char(0, 0)).to eq BRAILLE.last
-      expect(subject.char(1, 0)).to eq BRAILLE.last
-    end
-  end
-
-  describe "#unset" do
-    it 'sets and unsets a pixel' do
-      subject.set(0, 0)
-      expect(subject.char(0, 0)).to eq BRAILLE[0]
-      subject.unset(0, 0)
-      expect(subject.char(0, 0)).to eq BRAILLE.last
-    end
-
-    it 'sets four pixel but only unsets one' do
-      subject.set(0, 0)
-      subject.set(0, 1)
-      subject.set(1, 0)
-      subject.set(1, 1)
-      expect(subject.char(0, 0)).to eq BRAILLE[3]
-      subject.unset(1, 1)
-      expect(subject.char(0, 0)).to eq BRAILLE[2]
-    end
-  end
-
-  describe "#toggle" do
-    it 'toggles a pixel' do
-      subject.toggle(0, 0)
-      subject.toggle(1, 0)
-      expect(subject.char(0, 0)).to eq BRAILLE[1]
-      subject.toggle(1, 0)
-      expect(subject.char(0, 0)).to eq BRAILLE[0]
-      subject.toggle(0, 0)
-      expect(subject.char(0, 0)).to eq BRAILLE.last
     end
   end
 end
