@@ -27,6 +27,11 @@ module Drawille
       @chars[py][px] |= PIXEL_MAP[y % 4][x % 2]
     end
 
+    def unset x, y
+      x, y, px, py = convert x, y
+      @chars[py][px] &= ~PIXEL_MAP[y % 4][x % 2]
+    end
+
     def row y, options={}
       row   = @chars[y]
       min   = options[:min_x] || row.keys.min

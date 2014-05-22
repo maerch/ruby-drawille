@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 require 'drawille'
 
-BRAILLE = %w[⠁ ⠉ ⠋ ⠛ ⠟ ⠿ ⡿ ⣿]
+BRAILLE = %w[⠁ ⠉ ⠋ ⠛ ⠟ ⠿ ⡿ ⣿ ⠀]
 
 def set_and_check_char px_range, py_range, cx, cy
   i = 0
