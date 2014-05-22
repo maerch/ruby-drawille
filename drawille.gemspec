@@ -7,8 +7,9 @@ Gem::Specification.new do |gem|
   gem.name          = "drawille"
   gem.version       = Drawille::VERSION
   gem.authors       = ["Marcin Skirzynski"]
-  gem.description   = %q{Drawing in terminal with Unicode Braille characters.}
+  gem.description   = %q{Drawing in terminal.}
   gem.summary       = %q{Drawing in terminal with Unicode Braille characters.}
+  gem.license       = "MIT"
   gem.homepage      = "https://github.com/maerch/ruby-drawille"
 
   gem.files         = `git ls-files`.split($/)
