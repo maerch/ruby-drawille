@@ -66,7 +66,7 @@ draw canvas, Image.from_file('examples/stencil-2.jpg'), 141
 puts canvas.frame
 ```
 
-![Stencil](docs/images/stencil.png)
+![Stencil](docs/images/stencil.gif)
 
 This implementation also includes a Turtle graphics API for all your beloved fractals. See this simple example:
 
