@@ -5,6 +5,8 @@ module Drawille
 
   class Canvas
 
+    attr_reader :chars
+
     PIXEL_MAP = [[0x01, 0x08], 
                  [0x02, 0x10], 
                  [0x04, 0x20], 
@@ -43,6 +45,10 @@ module Drawille
 
     def frame options={}
       rows(options).join("\n")
+    end
+
+    def char x, y
+      to_braille @chars[y][x]
     end
 
     private
