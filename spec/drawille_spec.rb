@@ -71,5 +71,17 @@ describe Drawille do
       expect(subject.char(0, 0)).to eq BRAILLE[2]
     end
   end
+
+  describe "#toggle" do
+    it 'toggles a pixel' do
+      subject.toggle(0, 0)
+      subject.toggle(1, 0)
+      expect(subject.char(0, 0)).to eq BRAILLE[1]
+      subject.toggle(1, 0)
+      expect(subject.char(0, 0)).to eq BRAILLE[0]
+      subject.toggle(0, 0)
+      expect(subject.char(0, 0)).to eq BRAILLE.last
+    end
+  end
 end
 
