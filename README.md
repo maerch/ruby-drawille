@@ -26,16 +26,47 @@ Or install it yourself as:
 Drawille can be used like the Python implementation due to the similar API. Here is on of its examples:
 
 ```ruby
-c = Drawille::Canvas.new
+require 'drawille'
+
+canvas = Drawille::Canvas.new
 
 (0..1800).step(10).each do |x| 
-  c.set(x/10, 10 + Math.sin(x * Math::PI / 180) * 10) 
+  canvas.set(x/10, 10 + Math.sin(x * Math::PI / 180) * 10) 
 end
 
-puts c.frame
+puts canvas.frame
 ```
 
 ![Sinus](docs/images/sinus.gif)
+
+But in the end you can use it in every possible situation where you have only two colors. This means it is perfect for some stencil graffitis.
+
+```ruby
+require 'drawille'
+require 'chunky_png'
+
+include ChunkyPNG
+
+canvas = Drawille::Canvas.new
+
+def draw canvas, img, xoffset=0
+  (0..img.dimension.width-1).each do |x|
+    (0..img.dimension.height-1).each do |y|
+      r = Color.r(img[x,y])
+      g = Color.g(img[x,y])
+      b = Color.b(img[x,y])
+      canvas.set(x+xoffset, y) if (r + b + g) > 100
+    end
+  end
+end
+
+draw canvas, Image.from_file('examples/stencil-1.png')
+draw canvas, Image.from_file('examples/stencil-2.jpg'), 141
+
+puts canvas.frame
+```
+
+![Stencil](docs/images/stencil.png)
 
 This implementation also includes a Turtle graphics API for all your beloved fractals. See this simple example:
 
