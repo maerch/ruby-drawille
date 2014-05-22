@@ -1,7 +1,7 @@
 RUBY-DRAWILLE
 ========
 
-Drawing in terminal with Unicode [Braille][] characters. Implementation based on [drawille][] by @asciimoo.
+Draw in your terminal with Unicode [Braille][] characters. Implementation based on [drawille][] by @asciimoo.
 
 [Braille]: http://en.wikipedia.org/wiki/Braille
 [Drawille]: https://github.com/asciimoo/drawille
@@ -23,6 +23,8 @@ Or install it yourself as:
 
 ## Usage
 
+Drawille can be used like the Python implementation due to the similar API. Here is on of its examples:
+
 ```ruby
 c = Drawille::Canvas.new
 
@@ -33,27 +35,94 @@ end
 puts c.frame
 ```
 
-![Usage](docs/images/sinus.gif)
+![Sinus](docs/images/sinus.gif)
+
+This implementation also includes a Turtle graphics API for all your beloved fractals. See this simple example:
+
+```ruby
+require 'drawille'
+
+canvas = Drawille::Canvas.new
+
+frame = canvas.paint do
+  move 300, 300
+  down
+
+  36.times do
+    right 10
+    36.times do
+      right 10
+      forward 8
+    end
+  end
+
+end.frame
+
+puts frame
+```
+
+![MN-gon](docs/images/mn-gon.gif)
+
+### Turtle-API
+
+```ruby
+  canvas = Drawille::Canvas.new
+  canvas.paint do
+    # Move your brush with the following commands
+  end
+``` 
+
+``forward 10`` or ``fw 10``
+
+Moves your brush in the current direction (default is 0 which points to the right). Please note that your brush has to be set down to actually draw. 
+
+``back 10`` or ``bk 10``
+
+Moves your brush in the opposite direction. Please note that your brush has to be set down to actually draw. 
+
+``right 90`` or ``rt 90``
+
+Turn the direction of the brush by 90 degrees to the right.
+
+``left 90`` or ``lt 90``
+
+Turn the direction of the brush by 90 degrees to the left.
+
+``up`` or ``pu``
+
+Sets the brush up which means all following operations will have no effect on the canvas itself.
+
+``down`` or ``pd``
+
+Sets the drush down which means that moving the brush will draw a stroke.
+
+``move 100, 100`` or ``mv 100, 100``
+
+Moves the brush to the position ``x=100`` and ``y=100``.
+
+``line from: [30, 20], to: [100, 100]``
+
+A line between the two given points will be drawn. The movement to the starting point will be with an ``up`` brush, but the former state of the brush will be restored after this line.
 
 ### ``Drawille::Canvas`` API
 
-#### ``#set(x, y)`` / ``#[x, y] = true``
+``#set(x, y)`` / ``#[x, y] = true``
 
 Sets the state of the given position to ``true``, i.e. the ``#frame`` method will render a point at ``[x,y]``.
 
-#### ``#unset(x, y)`` / ``#[x, y] = false``
+``#unset(x, y)`` / ``#[x, y] = false``
 
 Sets the state of the given position to ``false``, i.e. the ``#frame`` method will _not_ render a point at ``[x,y]``.
 
-#### ``#toggle(x, y)``
+``#toggle(x, y)``
 
 Toggles the state of the given position.
 
-#### ``#clear``
+``#clear``
 
 No point will be rendered by the ``#frame`` method.
 
-#### ``#frame``
+``#frame``
 
 Returns newline-delimited string of the given canvas state. Braille characters are used to represent points. Please note that a single character contains 2 x 4 pixels.
 
