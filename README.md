@@ -23,7 +23,7 @@ Or install it yourself as:
 
 ## Usage
 
-Drawille can be used like the Python implementation due to the similar API. Here is on of its examples:
+Drawille can be used like the Python implementation due to the similar API. Here is one of its examples:
 
 ```ruby
 require 'drawille'
@@ -68,7 +68,7 @@ puts canvas.frame
 
 ![Stencil](docs/images/stencil.gif)
 
-This implementation also includes a Turtle graphics API for all your beloved fractals. See this simple example:
+This implementation also includes a [Turtle graphics](http://en.wikipedia.org/wiki/Turtle_graphics) API for all your beloved fractals:
 
 ```ruby
 require 'drawille'
