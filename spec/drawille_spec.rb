@@ -102,6 +102,15 @@ describe Drawille do
       end
       expect(subject.frame).to eq IO.read("spec/sinus.dat")
     end
+
+    it 'does not throw an exception on an empty canvas' do
+      subject.frame
+    end
+
+    it 'is an empty frame for an empty canvas' do
+      expect(subject.rows.size).to eq 0
+      expect(subject.frame).to eq ""
+    end
   end
 end
 

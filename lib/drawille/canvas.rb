@@ -56,13 +56,14 @@ module Drawille
       row   = @chars[y]
       min   = options[:min_x] || row.keys.min
       max   = options[:max_x] || row.keys.max
-
+      return "" if min.nil? || max.nil?
       (min..max).reduce("") { |memo, i| memo << to_braille(row[i] || 0) }
     end
 
     def rows options={}
       min   = options[:min_y] || @chars.keys.min
       max   = options[:max_y] || @chars.keys.max
+      return [] if min.nil? || max.nil?
       options[:min_x] ||= @chars.reduce([]) { |m,x| m << x.last.keys }.flatten.min
       options[:max_x] ||= @chars.reduce([]) { |m,x| m << x.last.keys }.flatten.max
       (min..max).map { |i| row i, options }
