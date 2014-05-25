@@ -1,8 +1,10 @@
 # -*- encoding: utf-8 -*-
 require 'spec_helper'
 
-describe Drawille do
-  subject { Drawille::Canvas.new }
+include Drawille
+
+describe Canvas do
+  subject { Canvas.new }
 
   describe '#set' do
     it 'sets pixel in the first char in the first row' do
@@ -114,3 +116,139 @@ describe Drawille do
   end
 end
 
+describe Brush do
+  subject(:canvas) { Canvas.new }
+  subject(:brush)  { Brush.new(canvas) }
+
+  describe "#up" do
+    it 'is up by default' do
+      brush.forward 40
+      expect(canvas.rows.size).to eq 0
+    end
+
+    it 'does not draw anymore after putting brush up' do
+      brush.down
+      brush.forward 1
+      brush.up
+      brush.forward 2
+      expect(canvas.rows.size).to eq 1
+      expect(canvas.rows[0].size).to eq 1
+      expect(canvas.char(0, 0)).to eq BRAILLE[1]
+    end
+  end
+
+  describe "#down" do
+    it "draws if brush is put down" do
+      brush.down
+      brush.forward 1
+      expect(canvas.rows.size).to eq 1
+      expect(canvas.rows[0].size).to eq 1
+      expect(canvas.char(0, 0)).to eq BRAILLE[1]
+    end
+  end
+
+  describe "#forward" do
+    it 'moves to the right without changing the direction' do
+      brush.down
+      brush.forward 3
+      expect(canvas.rows.size).to eq 1
+      expect(canvas.rows[0].size).to eq 2
+      expect(canvas.char(0, 0)).to eq BRAILLE[1]
+      expect(canvas.char(1, 0)).to eq BRAILLE[1]
+    end
+  end
+
+  describe "#back" do
+    it 'moves backward without drawing' do
+      brush.forward 10
+      brush.back 10
+      expect(canvas.rows.size).to eq 0
+    end
+
+    it 'moves backward with drawing' do
+      brush.forward 9
+      brush.down
+      brush.back 9
+      expect(canvas.rows.size).to eq 1
+      expect(canvas.rows[0].size). to eq 5
+      5.times do |i|
+        expect(canvas.char(i, 0)).to eq BRAILLE[1]
+      end
+    end
+  end
+
+  describe "#right" do
+    it 'changes the direction' do
+      brush.down
+      brush.forward 1
+      brush.right 90
+      brush.forward 3
+      brush.right 90
+      brush.forward 1
+      brush.right 90
+      brush.forward 3
+      expect(canvas.rows.size).to eq 1
+      expect(canvas.rows[0].size).to eq 1
+      expect(canvas.char(0, 0)).to eq BRAILLE[-2]
+    end
+  end
+
+  describe "#left" do
+    it 'changes the direction' do
+      brush.move 0, 3
+      brush.down
+      brush.down
+      brush.forward 1
+      brush.left 90
+      brush.forward 3
+      brush.left 90
+      brush.forward 1
+      brush.left 90
+      brush.forward 3
+      expect(canvas.rows.size).to eq 1
+      expect(canvas.rows[0].size).to eq 1
+      expect(canvas.char(0, 0)).to eq BRAILLE[-2]
+    end
+  end
+
+  describe "#move" do
+    it 'moves and does not draw a line' do
+      brush.move 200, 200
+      expect(canvas.rows.size).to eq 0
+    end
+
+    it 'moves and does draw a line' do
+      brush.down
+      brush.move 99, 0
+      brush.up
+      brush.move 99, 4
+      brush.down
+      brush.move  0, 4
+      expect(canvas.rows.size).to eq 2
+      expect(canvas.rows[0].size).to eq 50
+      50.times do |i|
+        expect(canvas.char(i, 0)).to eq BRAILLE[1]
+        expect(canvas.char(i, 1)).to eq BRAILLE[1]
+      end
+    end
+  end
+
+  describe "#line" do
+    it 'should draw a line regardless of the brush state' do
+      brush.line from: [2, 0], to: [5, 0]
+      expect(canvas.rows.size).to eq 1
+      expect(canvas.char(0, 0)).to eq BRAILLE.last
+      expect(canvas.char(1, 0)).to eq BRAILLE[1]
+      expect(canvas.char(2, 0)).to eq BRAILLE[1]
+    end
+
+    it 'should not draw with the move to the beginning of the line' do
+      brush.down
+      brush.line from: [2, 0], to: [5, 0]
+      expect(canvas.rows.size).to eq 1
+      expect(canvas.char(0, 0)).to eq BRAILLE.last
+      expect(canvas.char(1, 0)).to eq BRAILLE[1]
+      expect(canvas.char(2, 0)).to eq BRAILLE[1]
+    end
+  end
+end

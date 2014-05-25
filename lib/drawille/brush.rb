@@ -26,8 +26,8 @@ module Drawille
 
     def forward length
       theta = ((@state[:rotation]) / 180.0 * Math::PI)
-      x     = @state[:x] + length * Math::cos(theta)
-      y     = @state[:y] + length * Math::sin(theta)
+      x     = (@state[:x] + length * Math::cos(theta)).round
+      y     = (@state[:y] + length * Math::sin(theta)).round
 
       move x, y
     end
