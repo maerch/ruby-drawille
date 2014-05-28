@@ -299,5 +299,15 @@ describe FlipBook do
         end
       end
     end
+
+    it 'returns an enumerator without a block given' do
+      canvas.set(0, 0)
+      flipbook.snapshot canvas
+      canvas.set(1, 0)
+      flipbook.snapshot canvas
+      flipbook.each_frame.with_index do |frame, i|
+        expect(frame).to eq BRAILLE[i]
+      end
+    end
   end
 end

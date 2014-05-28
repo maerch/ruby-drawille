@@ -22,6 +22,7 @@ module Drawille
     end
 
     def each_frame options={}
+      return enum_for(:each_frame) unless block_given?
       @snapshots.reduce({}) do |memo, diff|
         patched = HashDiff.patch!(memo, deep_clone(diff))
         yield frame(options.merge({chars: to_int_keys(patched)}))
