@@ -4,7 +4,7 @@ require 'spec_helper'
 include Drawille
 
 describe Canvas do
-  subject { Canvas.new }
+  subject(:canvas) { Canvas.new }
 
   describe '#set' do
     it 'sets pixel in the first char in the first row' do
@@ -22,76 +22,76 @@ describe Canvas do
 
   describe "#unset" do
     it 'sets and unsets a pixel' do
-      subject.set(0, 0)
-      expect(subject.char(0, 0)).to eq BRAILLE[0]
-      subject.unset(0, 0)
-      expect(subject.char(0, 0)).to eq BRAILLE.last
+      canvas.set(0, 0)
+      expect(canvas.char(0, 0)).to eq BRAILLE[0]
+      canvas.unset(0, 0)
+      expect(canvas.char(0, 0)).to eq BRAILLE.last
     end
 
     it 'sets four pixel but only unsets one' do
-      subject.set(0, 0)
-      subject.set(0, 1)
-      subject.set(1, 0)
-      subject.set(1, 1)
-      expect(subject.char(0, 0)).to eq BRAILLE[3]
-      subject.unset(1, 1)
-      expect(subject.char(0, 0)).to eq BRAILLE[2]
+      canvas.set(0, 0)
+      canvas.set(0, 1)
+      canvas.set(1, 0)
+      canvas.set(1, 1)
+      expect(canvas.char(0, 0)).to eq BRAILLE[3]
+      canvas.unset(1, 1)
+      expect(canvas.char(0, 0)).to eq BRAILLE[2]
     end
   end
 
   describe "#get" do
     it 'returns the state of a pixel' do
-      subject.set(1, 1)
-      expect(subject.get(0, 0)).to eq false
-      expect(subject.get(1, 1)).to eq true
+      canvas.set(1, 1)
+      expect(canvas.get(0, 0)).to eq false
+      expect(canvas.get(1, 1)).to eq true
     end
   end
 
   describe "#toggle" do
     it 'toggles a pixel' do
-      subject.toggle(0, 0)
-      subject.toggle(1, 0)
-      expect(subject.char(0, 0)).to eq BRAILLE[1]
-      subject.toggle(1, 0)
-      expect(subject.char(0, 0)).to eq BRAILLE[0]
-      subject.toggle(0, 0)
-      expect(subject.char(0, 0)).to eq BRAILLE.last
+      canvas.toggle(0, 0)
+      canvas.toggle(1, 0)
+      expect(canvas.char(0, 0)).to eq BRAILLE[1]
+      canvas.toggle(1, 0)
+      expect(canvas.char(0, 0)).to eq BRAILLE[0]
+      canvas.toggle(0, 0)
+      expect(canvas.char(0, 0)).to eq BRAILLE.last
     end
   end
 
   describe "#clear" do
     it 'clears the canvas' do
-      subject.set(0, 0)
-      subject.set(2, 0)
-      expect(subject.char(0, 0)).to eq BRAILLE[0]
-      expect(subject.char(1, 0)).to eq BRAILLE[0]
-      subject.clear
-      expect(subject.char(0, 0)).to eq BRAILLE.last
-      expect(subject.char(1, 0)).to eq BRAILLE.last
+      canvas.set(0, 0)
+      canvas.set(2, 0)
+      expect(canvas.char(0, 0)).to eq BRAILLE[0]
+      expect(canvas.char(1, 0)).to eq BRAILLE[0]
+      canvas.clear
+      expect(canvas.char(0, 0)).to eq BRAILLE.last
+      expect(canvas.char(1, 0)).to eq BRAILLE.last
     end
   end
 
   describe '#[]' do
     it 'works with alternate syntax' do
-      subject[0, 0] = true
-      expect(subject.char(0, 0)).to eq BRAILLE[0]
-      expect(subject[0, 0]).to eq true
-      expect(subject[1, 0]).to eq false
-      subject[0, 0] = false
-      expect(subject.char(0, 0)).to eq BRAILLE.last
-      expect(subject[0, 0]).to eq false
+      canvas[0, 0] = true
+      expect(canvas.char(0, 0)).to eq BRAILLE[0]
+      expect(canvas[0, 0]).to eq true
+      expect(canvas[1, 0]).to eq false
+      canvas[0, 0] = false
+      expect(canvas.char(0, 0)).to eq BRAILLE.last
+      expect(canvas[0, 0]).to eq false
     end
   end
 
   describe "#rows" do
     it 'has over 9 columns and 3 rows' do
-      subject.set(0,  1)
-      subject.set(4,  4)
-      subject.set(8,  5)
-      subject.set(16, 8)
+      canvas.set(0,  1)
+      canvas.set(4,  4)
+      canvas.set(8,  5)
+      canvas.set(16, 8)
 
-      expect(subject.rows.size).to eq 3
-      subject.rows.each do |row|
+      expect(canvas.rows.size).to eq 3
+      canvas.rows.each do |row|
         expect(row.length).to eq 9
       end
     end
@@ -100,18 +100,18 @@ describe Canvas do
   describe "#frame" do
     it 'prints a happy sinus' do
       (0..1800).step(10).each do |x| 
-          subject.set(x/10, 10 + Math.sin(x * Math::PI / 180) * 10) 
+          canvas.set(x/10, 10 + Math.sin(x * Math::PI / 180) * 10) 
       end
-      expect(subject.frame).to eq IO.read("spec/sinus.dat")
+      expect(canvas.frame).to eq IO.read("spec/sinus.dat")
     end
 
     it 'does not throw an exception on an empty canvas' do
-      subject.frame
+      canvas.frame
     end
 
     it 'is an empty frame for an empty canvas' do
-      expect(subject.rows.size).to eq 0
-      expect(subject.frame).to eq ""
+      expect(canvas.rows.size).to eq 0
+      expect(canvas.frame).to eq ""
     end
   end
 end
@@ -249,6 +249,55 @@ describe Brush do
       expect(canvas.char(0, 0)).to eq BRAILLE.last
       expect(canvas.char(1, 0)).to eq BRAILLE[1]
       expect(canvas.char(2, 0)).to eq BRAILLE[1]
+    end
+  end
+end
+
+describe FlipBook do
+  subject(:canvas)   { Canvas.new }
+  subject(:flipbook) { FlipBook.new }
+
+  describe "#each_frame" do
+    it 'yields four frames' do
+      canvas.set(0, 0)
+      flipbook.snapshot canvas
+      canvas.set(1, 0)
+      flipbook.snapshot canvas
+      canvas.set(0, 1)
+      flipbook.snapshot canvas
+      canvas.set(1, 1)
+      flipbook.snapshot canvas
+
+      i = 0
+      flipbook.each_frame do |frame|
+        expect(frame).to eq BRAILLE[i]
+        i += 1
+      end
+    end
+
+    it 'yields multiline frames' do
+      canvas.set(0, 0)
+      flipbook.snapshot canvas
+      canvas.set(0, 4)
+      flipbook.snapshot canvas
+
+      expect(flipbook.rows.size).to eq 2
+      expect(flipbook.char(0, 0)).to eq BRAILLE[0]
+      expect(flipbook.char(0, 1)).to eq BRAILLE[0]
+    end
+
+    it 'yields the same frame twice' do
+      canvas.set(0, 0)
+      flipbook.snapshot canvas
+      canvas.set(1, 0)
+      flipbook.snapshot canvas
+      2.times do
+        i = 0
+        flipbook.each_frame do |frame|
+          expect(frame).to eq BRAILLE[i]
+          i += 1
+        end
+      end
     end
   end
 end
