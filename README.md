@@ -158,6 +158,40 @@ No point will be rendered by the ``#frame`` method.
 
 Returns newline-delimited string of the given canvas state. Braille characters are used to represent points. Please note that a single character contains 2 x 4 pixels.
 
+### Flip-book
+
+```ruby
+c = Drawille::Canvas.new
+f = Drawille::FlipBook.new
+
+c.paint do
+  move 200, 100
+  down
+
+  36.times do
+    right 10
+    36.times do
+      right 10
+      forward 8
+    end
+    f.snapshot canvas
+  end
+
+end
+
+f.play repeat: true, fps: 6
+``` 
+
+With the flip-book it is possible to create and play animations. Just draw on the canvas as usual and create a snapshot for every frame you want to be included in the animation.
+
+``FlipBook#snapshot canvas``
+
+Saves a snapshot of the current state of the canvas.
+
+``FlipBook#snapshot#play``
+
+Will render the animation on the terminal. The method also takes an option hash with the options ``:repeat`` ``:fps``.
+
 ## License
 
 MIT License
