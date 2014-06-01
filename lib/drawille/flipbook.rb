@@ -16,17 +16,14 @@ module Drawille
     end
 
     def snapshot canvas
-      cloned     = clone_chars canvas.chars
-      @snapshots << HashDiff.diff(@chars, cloned)
-      @chars     = cloned
+      @snapshots << canvas.frame
+      @chars     =  canvas.chars
     end
 
     def each_frame options={}
       return enum_for(:each_frame) unless block_given?
-      @snapshots.reduce({}) do |memo, diff|
-        patched = HashDiff.patch!(memo, deep_clone(diff))
-        yield frame(options.merge({chars: to_int_keys(patched)}))
-        patched
+      @snapshots.each do |frame|
+        yield frame
       end
     end
 
@@ -62,21 +59,6 @@ module Drawille
     def clear_screen options
       Curses::clear
       Curses::refresh
-    end
-
-    def deep_clone a
-      Marshal.load(Marshal.dump(a))
-    end
-
-    def clone_chars chars
-      chars.inject({}) do |memo, (key, value)| 
-        memo[key] = value.clone; memo
-      end
-    end
-
-    # Returns a hash where all keys are ints since 'hashdiff' messes the types up
-    def to_int_keys chars
-      Hash[chars.map{ |k, v| [k.to_i, v.is_a?(Hash) ? to_int_keys(v) : v] }]
     end
   end
 end

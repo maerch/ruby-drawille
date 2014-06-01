@@ -1,6 +1,4 @@
 # -*- encoding: utf-8 -*-
-require 'hashdiff'
-
 module Drawille
 
   class Canvas
