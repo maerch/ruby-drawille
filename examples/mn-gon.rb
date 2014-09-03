@@ -3,7 +3,7 @@ require 'drawille'
 c = Drawille::Canvas.new
 
 frame = c.paint do
-  move 300, 300
+  move 0, 0
   down
 
   36.times do
