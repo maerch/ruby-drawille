@@ -38,11 +38,17 @@ module Drawille
         Curses::crmode
         Curses::curs_set 0
         repeat options do
-          each_frame options do |frame|
-            Curses::setpos(0, 0)
-            Curses::addstr(frame)
-            Curses::refresh
-            sleep(1.0/options[:fps])
+          if block_given?
+            loop {
+              canvas = yield
+              raise StopIteration if canvas == nil
+              draw canvas.frame
+            }
+          else
+            each_frame options do |frame|
+              draw frame
+              sleep(1.0/options[:fps])
+            end
           end
         end
       ensure
@@ -55,6 +61,12 @@ module Drawille
     end
 
     private
+
+    def draw frame
+      Curses::setpos(0, 0)
+      Curses::addstr(frame)
+      Curses::refresh
+    end
 
     def clear_screen options
       Curses::clear

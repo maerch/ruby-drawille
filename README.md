@@ -69,6 +69,10 @@ puts canvas.frame
 
 ![Stencil](docs/images/stencil.gif)
 
+With a "flipbook" you can also create animations on your terminal.
+
+![Conway](docs/images/conway.gif)
+
 This implementation also includes a [Turtle graphics](http://en.wikipedia.org/wiki/Turtle_graphics) API for all your beloved fractals:
 
 ```ruby
@@ -190,7 +194,9 @@ Saves a snapshot of the current state of the canvas.
 
 ``FlipBook#snapshot#play``
 
-Will render the animation on the terminal. The method also takes an option hash with the options ``:repeat`` ``:fps``.
+Will render the animation on the terminal. The method also takes an option hash with the options ``:repeat`` ``:fps``. 
+
+As an alternative to snapshots it is possible to pass a block which will be called consecutively and should return a canvas which will be rendered as a frame in the animation or ``nil`` to stop the animation. 
 
 ## License
 
