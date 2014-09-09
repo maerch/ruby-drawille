@@ -32,11 +32,12 @@ class Conway
     next_world = initialize_world { |x, y| 0 }
     each do |x, y|
       alive_neighbours = alive_neighbours x, y
-      next_world[x][y] = if cell_alive? x, y
-        (2..3).include?(alive_neighbours) ? 1 : 0
-      else 
-        alive_neighbours == 3 ? 1 : 0
-      end
+      next_world[x][y] = 
+        if cell_alive? x, y
+          (2..3).include?(alive_neighbours) ? 1 : 0
+        else 
+          alive_neighbours == 3 ? 1 : 0
+        end
     end
     @world = next_world
   end
