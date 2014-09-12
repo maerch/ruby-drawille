@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
 
-require 'pry'
 module Drawille
 
   module Frameable

@@ -21,7 +21,7 @@ module Drawille
     end
 
     def each_frame options={}
-      return enum_for(:each_frame) unless block_given?
+      return enum_for(__callee__) unless block_given?
       @snapshots.each do |frame|
         yield frame
       end
