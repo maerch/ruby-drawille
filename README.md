@@ -1,7 +1,7 @@
 Drawille for Ruby
 ========
 [![Gem Version](https://badge.fury.io/rb/drawille.svg)](http://badge.fury.io/rb/drawille)
-[![Build Status](https://codeship.com/projects/101918/status?branch=master)](https://codeship.com/projects/101918)
+[![Build Status](https://codeship.com/projects/f07b1f00-3a92-0133-f398-52eae9218b1b/status?branch=master)](https://codeship.com/projects/101918)
 
 Draw in your terminal with Unicode [Braille][] characters. Implementation based on [drawille][] by @asciimoo.
 
